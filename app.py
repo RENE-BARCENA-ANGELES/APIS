@@ -12,7 +12,7 @@ app =  Flask(__name__)
 
 # Configuración de la base de datos PostgreSQL
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
-#app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://rene:F0inAhZzB2jPkcJm4hCOWvzVLQlQuSka@dpg-d65uqfnpm1nc738kukm0-a.oregon-postgres.render.com/cetech_7t2i"
+#app.config['SQLALCHEMY_DATABASE_URI'] = "URL EXTERNA RENDER"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -33,20 +33,20 @@ def get_estudiantes():
     lista_estudiantes = []
     for estudiante in estudiantes:
         lista_estudiantes.append({
-            'no_control ': estudiante.no_control,
-            'nombre ': estudiante.nombre,
-            'ap_paterno ': estudiante.ap_paterno,
-            'ap_materno ': estudiante.ap_materno,
-            'semestre ': estudiante.semestre
+            'no_control': estudiante.no_control,
+            'nombre': estudiante.nombre,
+            'ap_paterno': estudiante.ap_paterno,
+            'ap_materno': estudiante.ap_materno,
+            'semestre': estudiante.semestre
         })
     return jsonify(lista_estudiantes)
-
+    
 #endpoint para obtener un alumno por el no_control
 @app.route('/estudiantes/<no_control>', methods=['GET'])
 def get_estudiante(no_control):
     estudiante = Estudiante.query.get(no_control)
     if estudiante is None:
-        return jsonify ({'msg':'Estudiante no encontrado'})
+        return jsonify ({'msj':'Estudiante no encontrado'})
     return jsonify({
         'no_control': estudiante.no_control,
         'nombre': estudiante.nombre,
@@ -55,16 +55,15 @@ def get_estudiante(no_control):
         'semestre': estudiante.semestre,
     })
 
-#
+#endpoint para eliminar un estudiante
 @app.route('/estudiantes/<no_control>', methods=['DELETE'])
 def delete_estudiante(no_control):
     estudiante = Estudiante.query.get(no_control)
     if estudiante is None:
-        return jsonify ({'msg':'Estudiante no encontrado'})
+        return jsonify ({'msj':'Estudiante no encontrado'})
     db.session.delete(estudiante)
     db.session.commit()
-    return jsonify({'msj':'Estudiante eliminado correctamente'})
-
+    return jsonify({ 'msj':'Estudiante eliminado correctamente'})
 
 #endpoint para agregar un nuevo estudiante
 @app.route('/estudiantes', methods=['POST'])
@@ -79,15 +78,15 @@ def insert_estudiante():
     )
     db.session.add(nuevo_estudiante)
     db.session.commit()
-    return jsonify ({'msg':'Estudiante agregado correctamente'})
+    return jsonify ({'msj':'Estudiante agregado correctamente'})
 
-# endpoint para actualizar estudiante
-@app.route('/estudiantes/<no_control>', methods = ['PUT'])
+# endpoint para actualizar un estudiante
+@app.route('/estudiantes/<no_control>', methods=['PUT'])
 def update_estudiante(no_control):
     estudiante = Estudiante.query.get(no_control)
     if estudiante is None:
-        return jsonify({'msg':'Estudiante no encontrado'})
-    
+        return jsonify({'msg': 'Estudiante no encontrado'})
+
     data = request.get_json()
 
     if "nombre" in data:
@@ -100,7 +99,8 @@ def update_estudiante(no_control):
         estudiante.semestre = data['semestre']
 
     db.session.commit()
-    return jsonify({'msj':'Estudiante actualizado exitosamente'})
+    return jsonify({'msg': 'Estudiante actualizado correctamente'})
+    
 
 
 if __name__ == '__main__':
