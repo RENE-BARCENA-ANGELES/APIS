@@ -11,8 +11,8 @@ load_dotenv()
 app =  Flask(__name__)
 
 # Configuración de la base de datos PostgreSQL
-#app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://rene:F0inAhZzB2jPkcJm4hCOWvzVLQlQuSka@dpg-d65uqfnpm1nc738kukm0-a.oregon-postgres.render.com/cetech_7t2i"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+#app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://rene:F0inAhZzB2jPkcJm4hCOWvzVLQlQuSka@dpg-d65uqfnpm1nc738kukm0-a.oregon-postgres.render.com/cetech_7t2i"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
